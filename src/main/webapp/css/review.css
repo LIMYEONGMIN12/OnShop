@@ -1,0 +1,109 @@
+@charset "UTF-8";
+
+																					/* STAR RATING */
+@import url(https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+@import url(http://fonts.googleapis.com/css?family=Calibri:400,300,700);
+
+li {
+	list-style:none;
+	border-bottom:1px solid #ccc;
+}
+
+fieldset,
+label {
+    margin: 0;
+    padding: 0
+}
+
+.rating {
+    border: none;
+    display:inline-block;
+}
+
+.myratings {
+    font-size: 20px;
+    width:27px;
+    color: black;
+    position:relative;
+    bottom:12px;
+}
+
+.rating>[id^="star"] {
+    display: none
+}
+
+.rating>label:before {
+    margin: 5px;
+    font-size: 20px;
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f005"
+}
+
+.rating>.half:before {
+    content: "\f089";
+    position: absolute
+}
+
+.rating>label {
+    color: #ddd;
+    float: right
+}
+
+.rating>[id^="star"]:checked~label,
+.rating:not(:checked)>label:hover,
+.rating:not(:checked)>label:hover~label {
+    color: #FFD700
+}
+
+.rating>[id^="star"]:checked+label:hover,
+.rating>[id^="star"]:checked~label:hover,
+.rating>label:hover~[id^="star"]:checked~label,
+.rating>[id^="star"]:checked~label:hover~label {
+    color: #FFED85
+}
+
+.reset-option {
+    display: none
+}
+
+.reset-button {
+    margin: 6px 12px;
+    background-color: rgb(255, 255, 255);
+    text-transform: uppercase
+}
+
+.card {
+	margin-bottom:10px;
+	text-align:center;
+    position: relative;
+    display: flex;
+    width: 500px;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #d2d2dc;
+    border-radius: 11px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgb(249, 249, 250);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(212, 182, 212, 1);
+    box-shadow: 0px 0px 5px 0px rgb(161, 163, 164)
+}
+
+.card .card-body {
+    padding: 10px;    
+}
+
+.card-body {
+	text-align:left;
+	margin-left:10px;
+    flex: 1 1 auto;
+    padding: 10px;
+}
+
+.list_total {
+	font-weight:bold;
+	font-size:1.25rem;
+	margin:10px;
+}

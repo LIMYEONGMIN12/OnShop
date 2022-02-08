@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+
+<sqlMap namespace="shoppinguser_space">
+
+	
+	<typeAlias  alias="egovMap"  type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="shoppinguserVO" type="egov.service.ShoppingUserVO"/>
+	<typeAlias  alias="mileageVO" type="egov.service.MileageVO"/>
+	<typeAlias  alias="orderVO" type="egov.service.OrderVO"/>
+	
+	<insert id="shoppingDAO.insertUser">
+		INSERT INTO usertbl( userid,
+							userpwd,
+							username,
+							usernickname,
+							userphone,
+							userzipcode,
+							useraddr1,
+							useraddr2,
+							useremail,
+							userbirth,
+							usergender,
+							usermileage, 
+							userrdate) VALUES ( #userId#,
+												#userPwd#,
+												#userName#,
+												#userNickname#,
+												#userPhone#,
+												nvl(#userZipcode#, ''),
+												nvl(#userAddr1#, ''),
+												nvl(#userAddr2#, ''),
+												#userEmail#,
+												#userBirth#,
+												#userGender#,
+												'1000',
+											 	sysdate) 
+	</insert>
+				
+	<insert id ="shoppingDAO.insertWelcomeMileage" >
+		
+		insert into mileageTbl(userid,milecost,milecontent,miledate)
+						values( #userId#, '1000', '회원가입 환영 마일리지', sysdate )
+	
+	
+	</insert>	
+	
+		
+	<insert id="shoppingDAO.insertWishList">
+		
+		insert into wishlist(
+							unq,
+							wishuserid,
+							wishpunq,
+							wishfilename,
+							wishpname
+							)
+					values(
+								wish_seq.nextval,
+								#wishuserid#,
+								#wishpunq#,
+								#wishfilename#,
+								#wishpname#
+					
+					
+							)
+		
+	
+	
+	
+	</insert>
+
+<!-- 	반품 교환 신청 (테이블 삽입 )    -->
+
+	
+	<insert id="shoppingDAO.insertUserReturn">
+		insert into returntbl(
+										unq,
+										selectreturn,
+										returnpname,
+										returnreason,
+										returnunq,
+										returnid,
+										returndate
+									
+							) values(
+								
+										return_seq.nextval,
+										'$selectreturn$',
+										'$returnpname$',
+										'$returnreason$',
+										'$returnunq$',
+										'$returnid$',
+										sysdate
+							)
+	</insert>
+							 
+							
+							
+							
+							
+			
+	
+	
+	
+	<select id="shoppingDAO.userIdCheck"  resultClass="java.lang.Integer">
+	
+		SELECT COUNT(*) FROM usertbl where userid=#userId# and userpwd=#userPwd#
+		
+	</select>
+	
+	<select id="shoppingDAO.userdupleIdCheck"  resultClass="java.lang.Integer">
+	
+		SELECT COUNT(*) FROM usertbl where userid=#userId# 
+		
+	</select>
+	
+	
+
+	<!-- 회원 로그인 -->
+	<select id ="shoppingDAO.userLogin"  resultClass="shoppinguserVO">
+		select userid,
+				userpwd,
+				username,
+				usernickname,
+				userphone,
+				userzipcode,
+				useraddr1,
+				useraddr2,
+				useremail,
+				to_char(userbirth, 'yyyy-mm-dd') userbirth,
+				usergender,
+				decode(usergrade,'F','Family(일반 등급)',
+						'VIP','VIP(우수등급)','VVIP','VVIP(최우수 등급)','SVIP(스페셜 VIP등급)' ) usergrade , 
+				userbought,
+				to_char(userrdate,'yyyy-mm-dd') userrdate,
+				usermileage
+		  	from usertbl
+		 where userid = #userId#
+		   and userpwd = #userPwd#   
+	</select>
+	
+	
+<!-- 	아이디찾기 -->
+	<select id="shoppingDAO.selectfindUserIdResult" resultClass="shoppinguserVO">
+	
+		select userid from usertbl
+			where
+				username =#userName# and useremail= #userEmail#
+	
+	</select>
+	
+	
+	
+	<!-- 마일리지 토탈  -->
+	<select id="shoppingDAO.selectMileageTotal"  resultClass="java.lang.Integer" >
+	
+		select count(*) from mileagetbl where  userid in( select userid from usertbl where userid = #userId# )
+	
+	</select>
+	
+	
+	
+	
+	<!-- 마일리지 리스트 -->
+	<select id="shoppingDAO.selectMileageList" resultClass="egovMap" >
+	
+	 select b.* from ( 
+		 	 select rownum rn, a.* from ( 
+		 	 select 		
+		 			decode(milestatus,'p','적립','m','차감') milestatus ,		
+		 			milecost,		
+		 			milecontent, 	
+		 			to_char(miledate,'yyyy-mm-dd')	miledate 
+		 			from mileagetbl where userid = #userId#
+		 			order by miledate desc ) a )b 
+		 	 where rn between #s_no# and #e_no# 
+ 
+	
+	
+	</select>
+	
+	<!-- 아이디찾기 -->
+	<select id="shoppingDAO.selectfindUserId"  resultClass="java.lang.Integer" >
+	
+		select count(*) from usertbl where username = #userName# and useremail = #userEmail#
+	
+	</select>
+	
+	<select id="shoppingDAO.selectCountlike" resultClass="java.lang.Integer" >
+	 
+	 	select count(*) from wishlist where wishuserid =#wishuserid# and wishpunq = #wishpunq#
+	
+	</select>
+	
+	
+	<select id="shoppingDAO.selectUserWishlist" resultClass="egovMap" >
+	
+	select  wishuserid,
+			wishpunq,
+			wishfilename,
+			wishpname
+	from 
+			wishlist
+	where
+			wishuserid = #wishuserid#
+	
+	
+	
+	</select>
+	
+	
+	<select id ="shoppingDAO.selectOrderList" resultClass="egovMap" >
+	SELECT b.* FROM (
+			SELECT rownum rn, a.* FROM (
+		
+	
+	
+		select  replace(orderpunq,',','/') orderpunq,
+				 replace(orderpcount,',','<![CDATA[<br><br>]]>')orderpcount,
+				 replace(orderpfile,',','/')orderpfile,
+                 replace(orderpname,',','<![CDATA[<br><br>]]>')orderpname,
+                unq,
+				orderid, 
+				ordername,
+				orderphone,
+				orderzipcode,
+                orderaddr1,
+				orderaddr2,
+				ordermemo,
+				replace(orderponeprice,',','<![CDATA[<br><br>]]>')orderponeprice,
+				to_char(orderprice, '999,999,999,999,999')orderprice,
+				to_char(orderdate,'yyyy/mm/dd HH:MI:SS PM') orderdate	,
+				replace(decode(orderstatus,'n','입금확인중',
+					'y','배송준비중',
+					'e','배송완료',
+					'r','교환 / 반품 신청',
+					're','환불처리 완료',
+					'c','교환처리 완료',
+					'[ 운송장 번호 ]<![CDATA[<br>]]>'||orderstatus),'k','')orderstatus
+		from  
+				ordertbl
+		where
+				orderid = '$orderId$'
+				 
+				<isNotNull property="s_text">
+					<isNotEmpty property="s_text">
+						<isEqual property="s_field" compareValue="orderdate">
+							and to_char($s_field$,'yyyy/mm/dd') LIKE '%$s_text$%'
+						</isEqual>
+						<isNotEqual property="s_field" compareValue="orderdate">
+							and $s_field$ LIKE '%$s_text$%'
+						</isNotEqual>
+					</isNotEmpty>
+				</isNotNull> 
+
+				ORDER BY orderdate desc ) a ) b
+			
+				WHERE
+				<isNotNull property="unq3">
+			        rn >= $s_no$ AND rn <![CDATA[ <= ]]> $e_no$
+		        </isNotNull>
+		        
+		        
+		        
+	</select>
+	
+	<select id="shoppingDAO.selectuserOrderTotal" resultClass="java.lang.Integer">
+	
+	 SELECT count(*) from ordertbl where orderid = '$orderId$'
+	 
+	 	<isNotNull property="s_text">
+					<isNotEmpty property="s_text">
+						<isEqual property="s_field" compareValue="orderdate">
+							and to_char($s_field$,'yyyy-mm-dd') LIKE '%$s_text$%'
+						</isEqual>
+						<isNotEqual property="s_field" compareValue="orderdate">
+							and $s_field$ LIKE '%$s_text$%'
+						</isNotEqual>
+					</isNotEmpty>
+				</isNotNull>
+	</select>
+	
+	<!-- 교환 반품 대상 출력 -->
+	<select id="shoppingDAO.selectUserReturnList" resultClass="orderVO">
+	
+		select 	unq,
+				orderid,
+				ordername,
+				orderphone,
+				orderzipcode,
+				orderaddr1,
+				orderaddr2,
+				ordermemo,
+				orderpunq,
+				orderpcount,
+				orderpfile,
+				orderprice,
+				orderdate,
+				orderstatus,
+				orderpname,
+				orderponeprice
+		from 
+				ordertbl
+		where 
+				unq= #unq#		
+		
+		
+	</select>
+	
+	<select id="shoppingDAO.selectuserInfo" resultClass="shoppinguserVO">
+		
+		select 
+				userid,
+				userpwd,
+				username,
+				usernickname,
+				userphone,
+				userzipcode,
+				useraddr1,
+				useraddr2,
+				useremail,
+				to_char(userbirth,'yyyy-mm-dd') userBirth,
+				usergender,
+				decode(usergrade,'F','Family(일반 등급)',
+						'VIP','VIP(우수등급)','VVIP','VVIP(최우수 등급)','SVIP(스페셜 VIP등급)' ) usergrade,
+				userbought,
+				userrdate,
+				usermileage
+				
+		from  
+			usertbl
+			
+		where userid = '$userId$'
+						
+		
+	
+	
+	</select>
+	<!-- 회원정보수정 -->
+	<update id="shoppingDAO.updateUserInfo">
+		update usertbl
+		
+			set 
+				userpwd = #userPwd#,
+				username = #userName#,
+				usernickname = #userNickname#,
+				userphone = #userPhone#,
+				userzipcode = nvl(#userZipcode#,''),
+				useraddr1 = nvl(#userAddr1#,''),
+				useraddr2 = nvl(#userAddr2#,''),
+				useremail = #userEmail#,
+				userbirth = '$userBirth$',
+				usergender = #userGender#
+		
+		where
+				userid = #userId# 
+	</update>
+	
+	<!-- 배송지 주소 수정 -->
+	<update id="shoppingDAO.updateUserAddr">
+	UPDATE usertbl
+	 set 
+		 userzipcode = #userZipcode#,
+		 useraddr1 =  #userAddr1#,
+		 useraddr2 = #userAddr2#
+	where
+		 userid = #userId#
+	
+	
+	</update>
+	
+	<update id="shoppingDAO.updatePtblPluswish">
+	
+		update producttbl set productwish =  productwish+1  where productunq = #wishpunq#
+	
+	</update>
+	
+	<update id="shoppingDAO.updatePtblMinuswish">
+	
+	update producttbl set productwish =  productwish-1  where productunq = #wishpunq#
+	
+	</update>
+	
+	<update id="shoppingDAO.updateOrderState">
+
+	update ordertbl set orderstatus = 'r' where unq = '$returnunq$'
+	
+	</update>
+	
+	
+	<delete id="shoppingDAO.deleteCountlike">
+	
+	delete from wishlist where wishuserid =#wishuserid# and wishpunq = #wishpunq#
+	
+	</delete>
+	
+</sqlMap>
+
+
+
+
+

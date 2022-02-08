@@ -1,0 +1,111 @@
+ul li {
+  list-style: none;
+}
+
+.order_s {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Order */
+.order_s .titleArea {
+  display: flex;
+  padding-top: 30px;
+  padding-left: 85px;
+}
+
+.order_s .titleArea h2 {
+  font-size: 20px;
+  font-weight: normal;
+  color: rgb(138, 135, 135);
+  padding-bottom: 20px;
+}
+
+/* 우측 상단 부분 */
+.order_s .path {
+  float: right;
+  font-size: 10px;
+}
+
+.order_s .path ul {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 28px;
+  padding-right: 85px;
+}
+
+.order_s .path li {
+  padding: 10px 13px 0 0;
+}
+
+/* 주문내역조회 */
+.container {
+  width: 100%;
+}
+
+.container .tab_title {
+  position: relative;
+  left: -10px;
+}
+
+.tab_title li {
+  display: flex;
+  float: left;
+  width: 100%;
+  height: 50px;
+  padding: 15px 15px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+/* box */
+.container .tab_cont {
+  clear: both;
+  border: 1px solid #dedede;
+  height: 100px;
+  background-color: white;
+}
+
+.container .tab_cont .stateSelect {
+  padding: 35px 20px;
+}
+
+/* 설명 */
+.container .orderul {
+  padding: 0px;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+/* 주문 상품 정보 */
+.container .title h6 {
+  font-size: 13px;
+  font-weight: bold;
+  margin-top: 25px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+}
+
+table {
+  margin-top: 20px;
+  font-size: 13px;
+  text-align: center;
+}
+
+th {
+  font-weight: normal;
+  padding-bottom: 20px;
+}
+
+.container .message {
+  text-align: center;
+  font-size: 12px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}

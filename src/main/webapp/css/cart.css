@@ -1,0 +1,234 @@
+ul li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+section {
+  display: flex;
+}
+
+/* 우측 상단 부분 */
+section .path {
+  float: right;
+  font-size: 10px;
+}
+
+section .path ul {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 28px;
+  padding-right: 85px;
+}
+
+section .path li {
+  padding: 10px 13px 0 0;
+}
+
+/* 쇼핑카트 */
+section .titleArea {
+  display: flex;
+  padding-top: 30px;
+  padding-left: 85px;
+}
+
+section .titleArea h2 {
+  font-size: 20px;
+  font-weight: normal;
+  color: rgb(138, 135, 135);
+  padding-bottom: 20px;
+}
+
+/* 혜택 정보 */
+section .description {
+  font-size: 13px;
+  margin-left: 85px;
+  margin-bottom: 40px;
+  width: 86%;
+  height: 128px;
+  border: 1px solid #ccc;
+}
+
+section .description .member span {
+  position: relative;
+  display: block;
+  top: 50%;
+  margin-top: 50px;
+  margin-left: 30px;
+}
+
+section .description .member p {
+  position: relative;
+  display: block;
+  margin-top: -55px;
+  margin-left: 150px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 24px;
+}
+
+section .description .mileage {
+  position: relative;
+  display: block;
+  margin-top: 20px;
+  margin-left: 110px;
+}
+
+/* 국내배송상품 */
+section .container .row .col .nav-item {
+  font-size: 12px;
+}
+
+/* 일반상품 */
+section .tab_content {
+  font-size: 11px;
+  padding-top: 20px;
+}
+
+section .tab_content h3 {
+  font-size: 13px;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  background-color: rgb(236, 236, 236);
+  height: 40px;
+  padding-left: 10px;
+  padding-top: 12px;
+}
+
+/* 체크 박스 */
+section .cart_info {
+  text-align: center;
+  position: relative;
+  top: 25px;
+  border-top: 1px solid #ccc;
+}
+
+/* 이미지 */
+section .cart_info .cart_img img {
+  width: 80px;
+  height: 80px;
+}
+
+/* 상품정보 */
+.left_img {
+  text-align: left;
+  padding-left: 40px;
+}
+
+/* 옵션변경 */
+section .cart_info .left_img .dropdown {
+  padding-top: 10px;
+}
+
+/* 수량 */
+.quantity_btn .base_qty a {
+  display: flex;
+  justify-content: right;
+  position: relative;
+  top: -23px;
+  left: 74px;
+  width: 5px;
+  height: 11px;
+}
+
+/* 선택 */
+.button_bt_small button {
+  display: flex;
+  width: 80px;
+  height: 43px;
+  background-color: white;
+  margin-bottom: 1px;
+  margin-left: 15px;
+  padding-left: 16px;
+  line-height: 35px;
+}
+
+/* [기본배송] */
+section .tab_content2 .normal {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  background-color: rgb(245, 245, 245);
+  height: 60px;
+  padding-left: 10px;
+  padding-top: 20px;
+}
+
+/* 선택상품을 삭제하기, 장바구니 비우기, 견적서 출력 */
+section .select .select_box {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+
+section .select .select_box button {
+  width: 90px;
+  height: 40px;
+  background-color: white;
+}
+
+/* 총 상품금액, 총 배송비, 결제예정금액 */
+section .all_amount {
+  border-top: 1px solid #ccc;
+  margin-top: 40px;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+section .all_amount .amount_info {
+  display: flex;
+  justify-content: space-between;
+}
+
+section .all_amount .amount {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 20px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+/* 전체상품주문, 선택상품주문, 쇼핑 계속하기 */
+section .all_btn {
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+section .all_btn .btn_list {
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
+}
+
+section .all_btn .btn_list button {
+  width: 110px;
+  height: 60px;
+  position: relative;
+  left: 80px;
+}
+
+/* 이용안내 */
+section .help {
+  border: 1px solid #ccc;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+section .help > h6 {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: rgb(245, 245, 245);
+}
+
+section .help .inner {
+  padding: 15px;
+}
+
+section .help .inner > h6 {
+  font-size: 12px;
+}

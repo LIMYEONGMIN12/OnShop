@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+
+<sqlMap  namespace="product_space">
+
+	<typeAlias  alias="egovMap"  type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="productVO"   type="egov.service.ProductVO"/>
+
+	<insert id ="productDAO.insertProduct" >
+	INSERT INTO producttbl( 
+							productunq,
+							productid,
+							categorycode,
+							gubun,
+							productname,
+							productsize,
+							productcolor,
+							productprice,
+							productstock,
+							productexplain,
+							filename,
+							filesize,
+							productrdate
+					
+						
+							
+							
+							 )VALUES (
+							productTbl_seq.nextval,
+							#productId#, 
+							#categoryCode#,
+							#gubun#,
+							#productName#,
+							#productSize#,
+							#productColor#,
+							#productPrice#,
+							#productStock#,
+							#productExplain#,
+							'$filename$',
+							'$filesize$',
+							sysdate
+						
+							
+						
+							)	
+		
+	</insert>
+
+
+<select id="productDAO.selectMainList" resultClass="egovMap">
+		SELECT b.* FROM  (
+				 SELECT rownum rn, a.* FROM  (
+				
+				SELECT filename, 
+						productunq,
+						productname,
+						to_char(productprice,'999,999,999,999,999') productPrice2, 
+						productexplain,
+						categorycode
+				FROM
+						producttbl
+				ORDER BY 
+						productsell DESC ) a )b
+				where rn <![CDATA[<=]]> 5
+						
+					
+							
+
+</select> 
+
+
+<select id="productDAO.selectMainListnew" resultClass="egovMap">
+		SELECT b.* FROM  (
+				 SELECT rownum rn, a.* FROM  (
+				
+				SELECT filename, 
+						productunq,
+						productname,
+						to_char(productprice,'999,999,999,999,999') productPrice2, 
+						productexplain,
+						categorycode
+				FROM
+						producttbl
+				ORDER BY 
+						productrdate DESC ) a )b
+				where rn <![CDATA[<=]]> 5
+						
+					
+							
+
+</select> 
+
+<!-- 카테고리별 상품리스트 -->
+<select id="productDAO.selectGubunList" resultClass="egovMap">
+	
+				
+				SELECT filename, 
+						productunq,
+						productname,
+						productprice,
+						to_char(productprice,'999,999,999,999,999') productPrice2,
+						productexplain,
+						categorycode
+				FROM
+						producttbl
+				WHERE 		
+						 categorycode = #categoryCode# and gubun = #gubun#
+						
+				ORDER BY 
+						productrdate DESC 
+
+
+</select>
+
+	<select id="productDAO.selectProductTotal"  resultClass="java.lang.Integer">
+	SELECT COUNT(*) FROM producttbl 
+				<isNotNull property="s_text">
+					<isNotEmpty property="s_text">
+						<isEqual property="s_field" compareValue="productrdate">
+							WHERE to_char($s_field$,'yyyy-mm-dd') LIKE '%$s_text$%'
+						</isEqual>
+						<isNotEqual property="s_field" compareValue="productrdate">
+							WHERE $s_field$ LIKE '%$s_text$%'
+						</isNotEqual>
+					</isNotEmpty>
+				</isNotNull>
+	
+	
+
+	</select>
+
+	
+<select id="productDAO.selectProductList" resultClass="egovMap" >
+	
+	SELECT b.* FROM (
+			SELECT rownum rn, a.* FROM (
+				SELECT 
+					productunq,
+					productid,
+					categorycode,
+					productname,
+					productsize,
+					productcolor,
+					productprice,
+					productstock,
+					productexplain,
+					productsale,
+					productwish,
+					productsell,
+					filename,
+					filesize,
+					to_char(productrdate,'yyyy-mm-dd') productrdate,
+					to_char(productudate,'yyyy-mm-dd') productudate,
+					gubun
+		
+				FROM producttbl
+				
+				<isNotNull property="s_text">
+					<isNotEmpty property="s_text">
+						<isEqual property="s_field" compareValue="productrdate">
+							WHERE to_char($s_field$,'yyyy-mm-dd') LIKE '%$s_text$%'
+						</isEqual>
+						<isNotEqual property="s_field" compareValue="productrdate">
+							WHERE $s_field$ LIKE '%$s_text$%'
+						</isNotEqual>
+					</isNotEmpty>
+				</isNotNull>
+
+				ORDER BY productunq DESC ) a ) b
+		
+		WHERE
+				<isNotNull property="unq1">
+					productunq > $unq1$
+				</isNotNull>
+				
+				<isNotNull property="unq2">
+					productunq <![CDATA[ < ]]> $unq2$ and rownum = 1
+				</isNotNull>
+				 
+				<isNotNull property="unq3">
+			        rn >= $s_no$ AND rn <![CDATA[ <= ]]> $e_no$
+		        </isNotNull>
+
+</select>
+
+
+<!-- 상품 상세화면 -->
+<select id="productDAO.selectProductDetail" resultClass="productVO">
+		
+		select  
+				productunq,
+				productid,
+				categorycode,
+				productname,
+				productsize,
+				productcolor,
+				to_char(productprice,'999,999,999,999,999') productPrice2, 
+				productstock,
+				productexplain,  
+				productsale,
+				productwish,
+				productsell,
+				filename,
+				filesize,
+				productrdate,
+				gubun
+		from
+			producttbl
+		where
+			productunq = #productUnq#		
+
+
+</select>
+
+<select id="productDAO.selectSizeColor" resultClass="egovMap">
+
+	select productsize, productcolor,productid,productunq from producttbl where productname =#productName#
+
+</select>
+
+<select id ="productDAO.selectCountWish" resultClass="java.lang.Integer" >
+
+	select count(*) from wishlist where wishuserid = #wishuserid# and wishpunq = #wishpunq#
+
+
+
+</select>
+
+
+
+
+</sqlMap> 

@@ -1,0 +1,139 @@
+ul li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.cart {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 위시리스트 */
+.cart .titleArea {
+  display: flex;
+  float: left;
+  padding-top: 28px;
+  padding-left: 85px;
+}
+
+.cart .titleArea h2 {
+  font-size: 20px;
+  font-weight: normal;
+  color: rgb(138, 135, 135);
+  padding-bottom: 20px;
+}
+
+/* 우측 상단 부분 */
+.cart .path {
+  float: right;
+  font-size: 10px;
+}
+
+.cart .path ul {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 28px;
+  padding-right: 85px;
+}
+
+.cart .path li {
+  padding: 10px 13px 0 0;
+}
+
+/* 일반상품 */
+.wishlist {
+  width: 88%;
+  margin-left: 70px;
+  font-size: 11px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding-top: 20px;
+  padding-bottom: 60px;
+}
+
+/* 체크 박스 */
+.wishlist .cart_info {
+  text-align: center;
+  position: relative;
+  top: 25px;
+}
+
+/* 이미지 */
+.wishlist .cart_info .cart_img img {
+  width: 80px;
+  height: 80px;
+}
+
+/* 상품정보 */
+.wishlist .cart_info .left_img {
+  text-align: left;
+  padding-left: 40px;
+}
+
+/* 옵션변경 */
+.wishlist .op_change {
+  display: flex;
+  margin-top: 10px;
+}
+
+/* 수량 */
+.wishlist .cart_info .quantity_btn .base_qty a {
+  display: flex;
+  justify-content: right;
+  position: relative;
+  top: -23px;
+  left: 74px;
+  width: 5px;
+  height: 11px;
+}
+
+/* 선택 */
+.wishlist .cart_info .button_bt_small button {
+  display: flex;
+  width: 80px;
+  height: 43px;
+  background-color: white;
+  margin-bottom: 1px;
+  margin-left: 15px;
+  padding-left: 10px;
+  line-height: 35px;
+}
+
+/* 선택버튼 */
+.select {
+  display: flex;
+}
+
+.select .select_p .select_box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.select .select_p .select_box button {
+  width: 97px;
+  height: 45px;
+  background-color: white;
+}
+
+/* 전체상품주문, 관심상품비우기 */
+.select .all_product {
+  display: flex;
+  position: relative;
+  right: -632px;
+  margin-bottom: 60px;
+}
+
+.select .all_product .btn_list {
+  display: flex;
+  justify-content: space-between;
+}
+
+.select .all_product .btn_list button {
+  width: 120px;
+  height: 80px;
+  background-color: white;
+  margin-right: 1px;
+}

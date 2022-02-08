@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="cart_space" >
+
+		<typeAlias  alias="egovMap"  type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+		<typeAlias  alias="cartVO" type="egov.service.CartVO"/>
+<typeAlias  alias="shoppinguserVO" type="egov.service.ShoppingUserVO"/>
+
+
+	<insert id="cartDAO.insertShoppingCart">
+	
+		INSERT INTO cart (
+						unq,
+						filename,
+						cartproductunq,
+						cartuserId,
+						count
+		
+		
+							) VALUES (
+										cart_seq.nextval,
+										#filename#,
+										#cartproductUnq#,
+										#cartuserId#,
+										#count#
+										)
+	
+	</insert>
+	<insert id="cartDAO.insertOrderSave">
+	
+		insert into ordertbl (
+								unq,
+								orderid,
+								ordername,
+								orderphone,
+								orderzipcode,
+								orderaddr1,
+								orderaddr2,
+								orderMemo,
+								orderPunq,
+								orderPname,
+								orderPfile,
+								orderPcount,
+								orderprice,
+								orderPonePrice,
+								orderDate
+							)
+							values(
+								
+								order_seq.nextval,
+								#orderId#,
+								#orderName#,
+								#orderPhone#,
+								#orderZipcode#,
+								#orderAddr1#,
+								#orderAddr2#,
+								#orderMemo#,
+								#orderPunq#,
+								#orderPname#,
+								#orderPfile#,
+								#orderPcount#,
+								#orderPrice#,
+								#orderPonePrice#,
+								sysdate
+							
+					
+							
+							
+							)
+							
+							
+		
+					
+	
+	
+	</insert>
+	
+	<insert id="cartDAO.insertPlusMileage">
+	
+		insert into mileageTbl(userid,milecost,milecontent,miledate)
+				values(#orderId#, #totalMileage#, '상품 구매 적립 마일리지',sysdate)
+	
+	</insert>
+
+	<insert id="cartDAO.insertMinusMileage">
+		insert into mileageTbl(userid, milestatus, milecost,milecontent,miledate)
+				values('$orderId$','m', '$userMileage$', '마일리지 사용',sysdate)
+	</insert>	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="cartDAO.selectCountuser" resultClass="java.lang.Integer">
+		
+		SELECT COUNT(*) FROM cart WHERE cartuserid = '$cartuserId$'
+	
+	</select>
+	
+	
+
+
+	<select id="cartDAO.userCartList" resultClass="egovMap">
+	
+	
+		select c.filename filename,
+		
+			    c.unq,
+			    c.cartuserid,
+				
+				c.cartproductunq cartproductunq,
+		       c.cartuserid cartuserid,
+		        p.productname productname,
+		        p.productsize productsize,
+		        p.productcolor productcolor, 
+		        to_char(productprice,'999,999,999,999,999') productprice,
+		        productprice productprice2,
+		        to_char(p.productprice*c.count*5/100 ,'999,999,999,999,999' ) pmile, <!-- 마일리지 금액 -->
+		        
+		        to_char(p.productprice*c.count,'999,999,999,999,999') phap,
+		        c.count count
+        
+		from cart c, producttbl p 
+		
+		where c.cartproductUnq = p.productunq
+		and cartuserid = #cartuserId#
+		
+		<isNotNull property="type2">
+			<isNotEmpty property="type2">
+				and c.unq in ($dataz$)
+			</isNotEmpty>
+		</isNotNull> 
+		 
+		<isNotNull property="type">
+			<isNotEmpty property="type">
+				and cartproductUnq = #cartproductUnq#
+			</isNotEmpty>
+		</isNotNull> 
+		  
+		 
+		 
+		
+	</select>
+			
+				
+				
+				
+					
+	<select id="cartDAO.usertotalPrice"  resultClass="java.lang.String">
+	select 
+        to_char(  sum( p.productprice*c.count),'999,999,999,999,999')  totalprice
+       
+	from cart c, producttbl p 
+
+	where c.cartproductUnq = p.productunq
+		and cartuserid = #cartuserId#
+		
+		<isNotNull property="type2">
+			<isNotEmpty property="type2">
+				and c.unq in ($dataz$)
+			</isNotEmpty>
+		</isNotNull> 
+		
+		<isNotNull property="type">
+			<isNotEmpty property="type">
+				and cartproductUnq = #cartproductUnq#
+			</isNotEmpty>
+		</isNotNull> 
+	
+	
+	
+	
+	</select>
+	
+	<select id="cartDAO.usertotalMileage" resultClass="java.lang.Integer">
+	select 
+          sum( p.productprice*c.count*5/100) totalMileage
+       
+	from cart c, producttbl p 
+
+	where c.cartproductUnq = p.productunq
+		and cartuserid = #cartuserId#
+		<isNotNull property="type2">
+			<isNotEmpty property="type2">
+				and c.unq in ($dataz$)
+			</isNotEmpty>
+		</isNotNull> 
+		
+		<isNotNull property="type">
+			<isNotEmpty property="type">
+				and cartproductUnq = #cartproductUnq#
+			</isNotEmpty>
+		</isNotNull> 
+	
+	
+	</select>
+	
+	
+	
+	
+	
+	
+	<select id="cartDAO.selectProductCount" resultClass="java.lang.Integer">
+		 select count(*) from cart where 
+		 				cartuserId=#cartuserId# and 
+		 				cartproductUnq=#cartproductUnq# and
+		 				 filename= #filename#
+	
+	
+	</select>
+	
+	<select id="cartDAO.selectUserInfo" resultClass="shoppinguserVO">
+	
+		select userid,
+				username,
+				userphone,
+				userzipcode,
+				useraddr1,
+				useraddr2, 
+				usernickname,
+				usermileage,
+				decode(usergrade,'F','Family(일반 등급)',
+						'VIP','VIP(우수등급)','VVIP','VVIP(최우수 등급)','SVIP(스페셜 VIP등급)' ) usergrade 
+		from 
+			usertbl 
+		where userid = #userId#
+	
+	</select>
+
+	<update id="cartDAO.updateProductCount">
+	
+		 update cart 
+		 
+		 set count = count+#count#
+		 
+		  where cartuserId=#cartuserId# 
+		  and 
+		 		cartproductUnq=#cartproductUnq#
+		  and
+		 		 filename= #filename#
+	
+	
+	</update>
+
+	<update id="cartDAO.updatePcount">
+	
+		 update cart 
+		 
+		 set count = count+1
+		 
+		  where 
+		 
+		 		unq=#unq#
+	</update>
+	
+	
+	<update id="cartDAO.updatePcountminus">
+		 update cart 
+		 
+		 set count = count-1
+		 
+		  where 
+		 		unq=#unq#
+	</update>	
+		 
+	<update id="cartDAO.updateUserMileage">
+		
+		update usertbl
+		
+		set usermileage = usermileage+#totalMileage#
+		
+		where userid=#orderId#
+	
+	</update>
+	
+	<update id="cartDAO.updateMUserMileage">
+	
+		update usertbl
+		
+		set usermileage = usermileage - #userMileage#
+		
+		where userid=#orderId#
+	
+	 
+	
+	
+	
+	</update>
+	
+	<update id="cartDAO.updatePlusPcount">
+		update producttbl
+		
+		set productsell = productsell + '$orderPcount$'
+		
+		where productunq = '$orderPunq$'
+	
+	
+	</update>
+	
+	<update id="cartDAO.updateMinusPcount">
+		update producttbl
+	
+		set productstock = productstock - '$orderPcount$'
+		
+		where productunq = '$orderPunq$'
+	</update>
+	
+	
+	<delete id="cartDAO.deleteproduct" >
+	
+	DELETE FROM cart WHERE unq=#unq#
+	
+	
+	</delete>
+	
+	<delete id="cartDAO.deleteproductAll">
+	
+	DELETE FROM cart WHERE unq IN($datas$)
+	
+	</delete>
+	
+	<delete id="cartDAO.deleteCartReset">
+	
+	DELETE FROM cart WHERE cartuserid = #cartuserId#
+	
+	</delete>
+	
+	<delete id="cartDAO.deleteUserCart">
+	
+    DELETE FROM cart WHERE cartuserid = #orderId# and cartproductunq in ($orderPunq$) 
+	
+	</delete>
+	
+</sqlMap>

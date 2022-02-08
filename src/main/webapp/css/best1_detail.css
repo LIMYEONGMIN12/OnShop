@@ -1,0 +1,225 @@
+.detail_section {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 50px;
+  height:700px;
+}
+.detail_main_image {
+  
+}
+.detail_info {
+  display: block;
+  padding-right: 180px;
+}
+.price_box .p1 {
+  color: pink;
+  font-size: 20px;
+}
+
+.price_box .p2 {
+  text-decoration: line-through;
+  padding-left: 30px;
+}
+
+.detail_section .color_size {
+  font-size: 12px;
+  padding-bottom: 10px;
+}
+
+.points .box {
+  width: 300px;
+  height: 300px;
+
+  border: 1px solid #ccc;
+}
+
+.points .box .points_title {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+.points .box .points_info {
+  font-size: 11px;
+  margin: 30px;
+}
+
+.points .box .points_info .points_b {
+  font-size: 10px;
+  color: rgb(129, 129, 129);
+  margin-top: 3px;
+}
+
+.points .box .box_in_box {
+  width: 250px;
+  height: 180px;
+  background-color: rgb(241, 241, 241);
+  border: 1px solid #ccc;
+  margin-left: 25px;
+}
+
+.points .box .box_in_box .points_tip .points_c {
+  font-size: 11px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.points .box .box_in_box .points_tip .naver_points .img1 img {
+  width: 40px;
+  height: 12px;
+  padding-right: 7px;
+}
+
+.points .box .box_in_box .points_tip .naver_points .img2 img {
+  width: 40px;
+  height: 12px;
+  padding-right: 7px;
+}
+
+.points .box .box_in_box .points_tip .naver_points .img3 img {
+  width: 35px;
+  height: 16px;
+  padding-right: 7px;
+}
+
+.points .box .box_in_box .points_tip .naver_points {
+  margin-top: 15px;
+  margin-left: 6px;
+}
+
+section .color_size {
+  margin-top: 20px;
+}
+
+section .detail_info_footer {
+  margin-top: 20px;
+}
+
+section .detail_info_footer .shopping_cart {
+  width: 130px;
+  height: 60px;
+  font-size: 18px;
+  background-color: white;
+  color:#999;
+  padding: 0;
+  border:1px solid #999;
+ 
+}
+section .detail_info_footer .shopping_cart:hover {
+  width: 130px;
+  height: 60px;
+  font-size: 18px;
+  background-color: #999;
+  color: white;
+  padding: 0;
+  border:1px solid #999;
+ 
+}
+
+section .detail_info_footer .buy_item {
+  width: 130px;
+  height: 60px;
+  font-size: 18px;
+  background-color: white;
+  border:1px solid #81c147;
+  color: #81c147;
+}
+section .detail_info_footer .buy_item:hover {
+  width: 130px;;
+  height: 60px;
+  font-size: 18px;
+  background-color: #81c147;
+  border:1px solid #81c147;
+  color: white;
+}
+section .detail_header {
+ 
+  text-align: center;
+  border-top: 1px solid #ccc;
+  padding-top: 50px;
+}
+
+section .detail_info_detail {
+  text-align: center;
+ 
+}
+section .detail_info_detail2 {
+  text-align: center;
+ border-top:1px solid #ccc;
+}
+
+
+section .detail_nav {
+  text-align: center;
+  padding-top: 50px;
+}
+
+section .detail_nav .detail_nav_info {
+  font-size: 10px;
+}
+
+ section .shopping_info {
+  color:red;
+  text-align: center;
+  border-top:1px solid #ccc;
+  margin-top:30px;
+  padding:30px;
+} 
+section .shopping_guide {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #ccc;
+}
+
+section .shopping_guide .guide_info {
+  font-size: 13px;
+  padding-right: 10px;
+  font-weight: bold;
+}
+
+section .shopping_guide .inner {
+  font-size: 13px;
+  padding: 0;
+}
+
+section .detail_nav_info {
+  font-size: 10px;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+section .review {
+  font-size: 13px;
+  padding-bottom: 5px;
+  margin-left: 25px;
+}
+
+textarea {
+  margin-left: 3px;
+  padding: 0;
+  margin: 0;
+}
+
+section .reviews {
+  text-align: center;
+  margin-top: 10px;
+  padding-bottom: 18px;
+}
+
+section .reviews button {
+  width: 100px;
+  color: white;
+  background-color: rgb(75, 74, 74);
+}
+
+.reviwes_all {
+  border-top: 1px solid #ccc;
+}
+
+.reviwes_all .table_striped {
+  width: 80%;
+  border: 1px solid #dddddd;
+  text-align: center;
+  margin: 30px 140px;
+}
+

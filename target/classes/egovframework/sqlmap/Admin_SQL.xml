@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="admin_space">
+	
+	<typeAlias  alias="egovMap"  type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="shoppinguserVO" type="egov.service.ShoppingUserVO"/>
+	<typeAlias  alias="mileageVO" type="egov.service.MileageVO"/>
+<typeAlias  alias="boardVO" type="egov.service.BoardVO"/>
+
+	<select id="adminDAO.selectUserTotal" resultClass="java.lang.Integer">
+		SELECT COUNT(*) FROM usertbl 
+				<isNotNull property="s_text">
+					<isNotEmpty property="s_text">
+						<isEqual property="s_field" compareValue="userrdate">
+							WHERE to_char($s_field$,'yyyy-mm-dd') LIKE '%$s_text$%'
+						</isEqual>
+						<isNotEqual property="s_field" compareValue="userrdate">
+							WHERE $s_field$ LIKE '%$s_text$%'
+						</isNotEqual>
+					</isNotEmpty>
+				</isNotNull>
+	</select>
+
+	<select id="adminDAO.selectUserList"  resultClass="egovMap"  >
+		SELECT b.* FROM (
+			SELECT rownum rn, a.* FROM (
+				SELECT 
+					userid,
+					username,
+					decode(usergender,'M','남','F','여') usergender,
+					(to_char(sysdate,'yyyy') - to_char(userbirth,'yyyy')+1)userbirth,
+					userphone,
+					decode(usergrade,'F','Family(일반 등급)',
+						'VIP','VIP(우수등급)','VVIP','VVIP(최우수 등급)','SVIP(스페셜 VIP등급)' ) usergrade,
+					substr(useraddr1, 0, instr(useraddr1, ' ', 1, 2)) useraddr1,
+					to_char(userrdate, 'yyyy-mm-dd') userrdate
+						
+				FROM usertbl
+				
+				<isNotNull property="s_text">
+					<isNotEmpty property="s_text">
+						<isEqual property="s_field" compareValue="userrdate">
+							WHERE to_char($s_field$,'yyyy-mm-dd') LIKE '%$s_text$%'
+						</isEqual>
+						<isNotEqual property="s_field" compareValue="userrdate">
+							WHERE $s_field$ LIKE '%$s_text$%'
+						</isNotEqual>
+					</isNotEmpty>
+				</isNotNull>
+
+				ORDER BY userrdate DESC ) a ) b
+		
+				WHERE
+				
+				<isNotNull property="unq3">
+			        rn >= $s_no$ AND rn <![CDATA[ <= ]]> $e_no$
+		        </isNotNull>
+				
+	</select>
+
+	<select id="adminDAO.selectBoardList" resultClass="egovMap">
+		SELECT b.* FROM (
+				SELECT rownum rn, a.* FROM (
+					SELECT 
+						unq,
+						title,
+						content,
+						to_char(rdate,'yyyy-mm-dd') rdate,
+						hits
+					FROM board
+			ORDER BY unq DESC ) a ) b
+	
+	</select>
+
+	<select id="adminDAO.selectBoardTotal"   resultClass="java.lang.Integer">
+	
+		SELECT COUNT(*) FROM board 
+	
+	
+	</select>
+	
+	<select id="adminDAO.selectadminOrderList" resultClass="egovMap">
+		SELECT b.* FROM (
+			SELECT rownum rn, a.* FROM (
+		
+		select  replace(orderpunq,',','/') orderpunq,
+				 replace(orderpcount,',','<![CDATA[<br><br>]]>')orderpcount,
+				 replace(orderpfile,',','/')orderpfile,
+                 replace(orderpname,',','<![CDATA[<br><br>]]>')orderpname,
+                unq,
+				orderid, 
+				ordername,
+				orderphone,
+				orderzipcode,
+                orderaddr1,
+				orderaddr2,
+				ordermemo,
+				replace(orderponeprice,',','<![CDATA[<br><br>]]>')orderponeprice,
+				to_char(orderprice, '999,999,999,999,999')orderprice,
+				to_char(orderdate,'yyyy/mm/dd HH:MI:SS PM') orderdate,
+			replace(decode(orderstatus,'n','입금확인중',
+					'y','배송준비중',
+					'e','배송완료',
+					'r','교환 / 반품 신청',
+					're','환불처리 완료',
+					'c','교환처리 완료',
+					'[ 운송장 번호 ]<![CDATA[<br>]]>'||orderstatus),'k','')orderstatus
+				 
+		from 
+				ordertbl
+	
+				<isNotNull property="s_text">
+					<isNotEmpty property="s_text">
+						<isEqual property="s_field" compareValue="orderdate">
+							WHERE to_char($s_field$,'yyyy-mm-dd') LIKE '%$s_text$%'
+						</isEqual>
+						<isNotEqual property="s_field" compareValue="orderdate">
+							WHERE $s_field$ LIKE '%$s_text$%'
+						</isNotEqual>
+					</isNotEmpty>
+				</isNotNull>
+
+				ORDER BY orderdate DESC ) a ) b
+			
+				WHERE
+				<isNotNull property="unq3">
+			        rn >= $s_no$ AND rn <![CDATA[ <= ]]> $e_no$
+		        </isNotNull>
+				
+	
+	</select>
+	
+	<select id="adminDAO.selectOrderListTotal"  resultClass="java.lang.Integer">
+		
+		SELECT COUNT(*) FROM ordertbl 
+	<isNotNull property="s_text">
+					<isNotEmpty property="s_text">
+						<isEqual property="s_field" compareValue="orderdate">
+							WHERE to_char($s_field$,'yyyy-mm-dd') LIKE '%$s_text$%'
+						</isEqual>
+						<isNotEqual property="s_field" compareValue="orderdate">
+							WHERE $s_field$ LIKE '%$s_text$%'
+						</isNotEqual>
+					</isNotEmpty>
+				</isNotNull>
+	
+	</select>
+	
+	<select id="adminDAO.selectBoardDetail" resultClass="boardVO">
+		SELECT  unq,
+					title,
+					content,
+					to_char(rdate, 'yyyy-mm-dd') rdate,
+					udate,
+					hits
+		from board
+		where unq =#unq#				
+	
+	</select>
+	
+	<select id="adminDAO.selectReturnListTotal" resultClass="java.lang.Integer">
+		
+		select count(*) from returntbl
+		<isNotNull property="s_text">
+					<isNotEmpty property="s_text">
+						<isEqual property="s_field" compareValue="returndate">
+							WHERE to_char($s_field$,'yyyy-mm-dd') LIKE '%$s_text$%'
+						</isEqual>
+						<isNotEqual property="s_field" compareValue="returndate">
+							WHERE $s_field$ LIKE '%$s_text$%'
+						</isNotEqual>
+					</isNotEmpty>
+				</isNotNull>
+		
+	</select>
+	<select id="adminDAO.selectadminReturnList" resultClass="egovMap">
+	SELECT b.* FROM (
+			SELECT rownum rn, a.* FROM (
+		select 
+					unq,
+					decode(selectreturn,'return','반품','change','교환') selectreturn,
+					returnpname,
+					returnreason, 
+					returnunq,
+					returnid,
+					to_char(returndate,'yyyy/mm/dd') returndate
+		from
+					returntbl	
+							
+		<isNotNull property="s_text">
+					<isNotEmpty property="s_text">
+						<isEqual property="s_field" compareValue="returndate">
+							WHERE to_char($s_field$,'yyyy-mm-dd') LIKE '%$s_text$%'
+						</isEqual>
+						<isNotEqual property="s_field" compareValue="returndate">
+							WHERE $s_field$ LIKE '%$s_text$%'
+						</isNotEqual>
+					</isNotEmpty>
+				</isNotNull>
+
+				ORDER BY returndate DESC ) a ) b
+			
+				WHERE
+				<isNotNull property="unq3">
+			        rn >= $s_no$ AND rn <![CDATA[ <= ]]> $e_no$
+		        </isNotNull>
+				
+					
+	
+	</select>
+	
+	
+	<insert id="adminDAO.insertNboard">
+	
+		insert into board(
+							unq,
+							title,
+							content,
+							
+							rdate,
+							udate
+		
+		
+					)values(
+					BOARD_SEQ.nextval,
+					#title#,
+					#content#,
+					sysdate,
+					sysdate
+					
+					)
+					
+					
+			
+		
+	
+	
+	</insert>
+	
+	<update id="adminDAO.updateBoardHits">
+	UPDATE board 
+				SET 
+					hits=hits+1
+			WHERE
+					unq=#unq#
+	
+	
+	</update>
+	
+	<update id="adminDAO.updateOrderState">
+	
+		update ordertbl set orderstatus = ('$orderStatus$'||'$selboxDirect$') where unq = '$unq$'
+	
+	</update>
+	
+	<update id="adminDAO.updateBoard">
+	
+		update board set title = '$title$', content='$content$' where  unq = '$unq$'
+	
+	</update>
+	
+	
+	
+	<delete id="adminDAO.deleteBoard">
+	
+	delete from board where unq = #unq#
+	
+	
+	</delete>
+</sqlMap>
